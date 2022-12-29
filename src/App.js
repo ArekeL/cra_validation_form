@@ -7,6 +7,20 @@ class App extends Component {
 		email: "",
 		pass: "",
 		accept: false,
+
+		errors: {
+			user: false,
+			email: false,
+			pass: false,
+			accept: false,
+		},
+	};
+
+	messages = {
+		name_incorrect: "name must contain 8 characters and cannot contain spaces",
+		email_incorrect: "email must contain the @ sign",
+		password_incorrect: "password must contain 8 characters",
+		accept_incorrect: "check the accept box",
 	};
 	handleChange = (e) => {
 		const name = e.target.name;
@@ -27,8 +41,73 @@ class App extends Component {
 
 	handleSubmit = (e) => {
 		e.preventDefault();
-		console.log("OK");
+
+		const validation = this.formValidation();
+		console.log(validation);
+		if (validation.correct) {
+			this.setState({
+				user: "",
+				email: "",
+				pass: "",
+				accept: false,
+				message: "The form has been sent",
+
+				errors: {
+					user: false,
+					email: false,
+					pass: false,
+					accept: false,
+				},
+			});
+		} else {
+			this.setState({
+				errors: {
+					user: !validation.user,
+					email: !validation.email,
+					pass: !validation.pass,
+					accept: !validation.accept,
+				},
+			});
+		}
 	};
+
+	formValidation = () => {
+		let user = false;
+		let email = false;
+		let pass = false;
+		let accept = false;
+		let correct = false;
+
+		if (this.state.user.length > 7 && this.state.user.indexOf(" ") === -1) {
+			user = true;
+		}
+		if (this.state.email.indexOf("@") !== -1) {
+			email = true;
+		}
+		if (this.state.pass.length > 7) {
+			pass = true;
+		}
+		if (this.state.accept) {
+			accept = true;
+		}
+		if (user && email && pass && accept) {
+			correct = true;
+		}
+
+		return {
+			user,
+			email,
+			pass,
+			accept,
+			correct,
+		};
+	};
+
+	componentDidUpdate() {
+		if (this.state.message) {
+			setTimeout(() => this.setState({ message: "" }), 4000);
+		}
+	}
 	render() {
 		return (
 			<div className='App'>
@@ -44,7 +123,9 @@ class App extends Component {
 							onChange={this.handleChange}
 						/>
 					</label>
-
+					{this.state.errors.user && (
+						<span>{this.messages.name_incorrect}</span>
+					)}
 					<label htmlFor='email'>
 						e-mail:
 						<input
@@ -55,7 +136,9 @@ class App extends Component {
 							onChange={this.handleChange}
 						/>
 					</label>
-
+					{this.state.errors.email && (
+						<span>{this.messages.email_incorrect}</span>
+					)}
 					<label htmlFor='password'>
 						Password:
 						<input
@@ -66,7 +149,9 @@ class App extends Component {
 							onChange={this.handleChange}
 						/>
 					</label>
-
+					{this.state.errors.pass && (
+						<span>{this.messages.password_incorrect}</span>
+					)}
 					<label htmlFor='accept'>
 						<input
 							type='checkbox'
@@ -77,9 +162,12 @@ class App extends Component {
 						/>{" "}
 						Accept
 					</label>
-
+					{this.state.errors.accept && (
+						<span>{this.messages.accept_incorrect}</span>
+					)}
 					<button>Sing in</button>
 				</form>
+				{this.state.message && <h3>{this.state.message}</h3>}
 			</div>
 		);
 	}

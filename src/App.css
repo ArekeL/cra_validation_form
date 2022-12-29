@@ -12,7 +12,7 @@ h1 {
 
 label {
 	display: block;
-	margin: 15px 30px;
+	margin: 15px auto 5px 30px;
 	font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -23,15 +23,34 @@ input {
 input[type="checkbox"] {
 	margin-left: 0;
 	margin-top: 15px;
-	margin-bottom: 15px;
+	margin-bottom: 5px;
 	cursor: pointer;
 }
 button {
+	display: block;
 	margin-left: 20px;
+	margin-top: 15px;
 	max-width: 100px;
 	padding: 10px 20px;
 	font-size: 16px;
 	background-color: black;
 	color: aliceblue;
 	cursor: pointer;
+}
+
+button:hover {
+	background-color: rgb(255, 255, 255);
+	color: black;
+	transition: 0.5s;
+}
+span {
+	color: red;
+	font-size: 10px;
+	margin: -10px auto auto 30px;
+}
+
+h3 {
+	text-align: center;
+	margin: 20px auto;
+	color: rgb(72, 165, 72);
 }
